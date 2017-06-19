@@ -12,12 +12,26 @@ students = [
   {name: "Norman Bates", cohort: :november}
 ]
 
+def input_students
+  puts "Please enter a students name"
+  puts "To finish press enter twice"
+  name = gets.chomp
+  students = []
+
+  while !name.empty? do
+    students << {name: name, cohort: :november}
+    puts "We now have #{students.count} students"
+    name = gets.chomp
+  end
+  students
+end
+
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
 end
 
-def print(names)
+def print_name(names)
   names.each do |name|
     puts "#{name[:name]} (#{name[:cohort]} cohort)"
   end
@@ -27,6 +41,7 @@ def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
 
+students = input_students
 print_header
-print(students)
+print_name(students)
 print_footer(students)
