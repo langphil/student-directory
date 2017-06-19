@@ -1,3 +1,4 @@
+# Array of student hashes
 students = [
   {name: "Dr. Hannibal Lecter", cohort: :november},
   {name: "Darth Vader", cohort: :november},
@@ -12,6 +13,7 @@ students = [
   {name: "Norman Bates", cohort: :november}
 ]
 
+# Method to user input student names
 def input_students
   puts "Please enter a students name"
   puts "To finish press enter twice"
@@ -19,6 +21,7 @@ def input_students
   students = []
 
   while !name.empty? do
+
     students << {name: name, cohort: :november}
     puts "We now have #{students.count} students"
     name = gets.chomp
@@ -26,21 +29,30 @@ def input_students
   students
 end
 
+# Print the header
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
 end
 
+# Print the name
 def print_name(names)
-  names.each do |name|
-    puts "#{name[:name]} (#{name[:cohort]} cohort)"
+
+  names.each_with_index do |name, index|
+    if name[:name][0] == "P" && name[:name].length < 12
+      puts "Student number:#{index + 1} #{name[:name]} (#{name[:cohort]} cohort)"
+    else
+      break
+    end
   end
 end
 
+# Print the footer
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
 
+# Call the methods
 students = input_students
 print_header
 print_name(students)
