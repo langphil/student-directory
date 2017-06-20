@@ -1,4 +1,5 @@
 # Array of student hashes
+'''
 students = [
   {name: "Dr. Hannibal Lecter", cohort: :november},
   {name: "Darth Vader", cohort: :november},
@@ -12,6 +13,7 @@ students = [
   {name: "Joffrey Baratheon", cohort: :november},
   {name: "Norman Bates", cohort: :november}
 ]
+'''
 
 # Method to user input student names
 def input_students
@@ -37,7 +39,21 @@ end
 
 # Print the name
 def print_name(names)
+  length = names.length
+  count = 0
 
+  while count != length
+    name = names[count][:name]
+    cohort = names[count][:cohort]
+    if name[0] == "P" && name.length < 12
+      puts "Student number #{count + 1}: #{name} (#{cohort} cohort)"
+      count += 1
+    else
+      break
+    end
+  end
+
+'''
   names.each_with_index do |name, index|
     if name[:name][0] == "P" && name[:name].length < 12
       puts "Student number:#{index + 1} #{name[:name]} (#{name[:cohort]} cohort)"
@@ -45,6 +61,8 @@ def print_name(names)
       break
     end
   end
+end
+'''
 end
 
 # Print the footer
