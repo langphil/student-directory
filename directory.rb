@@ -14,30 +14,42 @@ students = [
   {name: "Norman Bates", cohort: :november}
 ]
 '''
-
-# Method to user input student names
-def input_students
+# Print the student questions
+def questions()
   puts "Please enter a students name"
-  puts "To finish press enter twice"
-  name = gets.chomp
+  puts "Press enter twice to finish"
+  @name = gets.chomp
+  case @name
+  when ""
+    puts "All done"
+  else
+    puts "Where were they born?"
+    @born = gets.chomp
+    puts "What is their favourite hobby?"
+    @hobby = gets.chomp
+  end
+end
+
+# Push the student details to a 'Hash'
+# Return the hash of students and their details
+def input_students
+  questions
   students = []
-
-  while !name.empty? do
-
-    students << {name: name, cohort: :november}
+  while !@name.empty? do
+    students << {name: @name, cohort: :November, born: @born, hobby: @hobby}
     puts "We now have #{students.count} students"
-    name = gets.chomp
+    questions
   end
   students
 end
 
 # Print the header
 def print_header
-  puts "The students of Villains Academy"
+  puts "Students"
   puts "-------------"
 end
 
-# Print the name
+# Print student namess
 def print_name(names)
   length = names.length
   count = 0
@@ -45,8 +57,20 @@ def print_name(names)
   while count != length
     name = names[count][:name]
     cohort = names[count][:cohort]
+    birth = names[count][:born]
+    hobby = names[count][:hobby]
     if name[0] == "P" && name.length < 12
-      puts "Student number #{count + 1}: #{name} (#{cohort} cohort)"
+      s_number = "Student number #{count + 1}:"
+      s_name = "#{name}"
+      s_cohort = "#{cohort}"
+      s_birth = "#{birth}"
+      s_hobby = "#{hobby}"
+      puts s_number.ljust(0)
+      puts "Name: #{s_name.rjust(20)}"
+      puts "Origin: #{s_birth.rjust(20)}"
+      puts "Cohort: #{s_cohort.rjust(20)}"
+      puts "Hobby: #{s_hobby.rjust(20)}"
+      puts
       count += 1
     else
       break
@@ -67,7 +91,7 @@ end
 
 # Print the footer
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+  # print "Overall, we have #{names.count} great student"
 end
 
 # Call the methods
