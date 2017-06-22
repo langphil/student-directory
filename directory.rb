@@ -1,3 +1,4 @@
+@students = []
 # List of questions for input
 def questions()
   puts "Please enter a students name"
@@ -21,14 +22,12 @@ end
 # Pushing question answers into a hash / array
 def input_students
   questions
-  students = []
   while !@name.empty? do
-    students << {name: @name, cohort: @cohort, born: @born, hobby: @hobby}
-    puts "We now have #{students.count} #{student_numbers(students.count)}"
-    p students
+    @students << {name: @name, cohort: @cohort, born: @born, hobby: @hobby}
+    puts "We now have #{@students.count} #{student_numbers(@students.count)}"
     questions
   end
-  students
+  @students
 end
 
 # Formatting the word 'student'
@@ -36,28 +35,38 @@ def student_numbers(num)
   num == 1 ? "student" : "students"
 end
 
+# Printing the menu for the user interactive menu
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items
+end
+
+def show_students
+  print_header
+  print_student_list
+  print_footer
+end
+
+# Get user input
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you meant, try again"
+  end
+end
+
 # An interactive menu for the user
 def interactive_menu
-  students = []
   loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit" # 9 because we'll be adding more items
-    selection = gets.chomp
-    case selection
-    when "1"
-      students = input_students
-    when "2"
-      p students
-      print_header
-      print_name(students)
-      print_cohort(students)
-      print_footer(students)
-    when "9"
-      exit
-    else
-      puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
@@ -83,10 +92,10 @@ def print_student(count, name)
 end
 
 # Printing only November Cohort
-def print_cohort(names)
-  names.map do |i|
+def print_cohort
+  puts "NOVEMBER COHORT"
+  @students.map do |i|
     if i[:cohort] == "November"
-      puts "NOVEMBER COHORT"
       puts "Name: #{i[:name]}"
       puts "Origin: #{i[:cohort]}"
       puts "Cohort: #{i[:born]}"
@@ -97,16 +106,16 @@ def print_cohort(names)
 end
 
 # Printing the names to console
-def print_name(names)
-  length = names.length
+def print_student_list
+  length = @students.length
   count = 0
   # While loop to loop through each student
+  puts "NEW STUDENTS BEGINNING WITH 'P'"
   while count != length
-    name = names[count]
+    name = @students[count]
     # Only print names that begin with 'P' less than 12 characters long
     if name[:name][0] == "P" && name[:name].length < 12
       # Call the print_student method
-      puts "NEW STUDENT BEGINNING WITH 'P'"
       print_student(count, name)
       count += 1
     else
@@ -117,8 +126,8 @@ def print_name(names)
 end
 
 # Printing the footer
-def print_footer(names)
-  puts "Overall, we have #{names.count} great #{student_numbers(names.count)}"
+def print_footer
+  puts "Overall, we have #{@students.count} great #{student_numbers(@students.count)}"
 end
 
 interactive_menu
