@@ -25,6 +25,7 @@ def input_students
   while !@name.empty? do
     students << {name: @name, cohort: @cohort, born: @born, hobby: @hobby}
     puts "We now have #{students.count} #{student_numbers(students.count)}"
+    p students
     questions
   end
   students
@@ -33,6 +34,31 @@ end
 # Formatting the word 'student'
 def student_numbers(num)
   num == 1 ? "student" : "students"
+end
+
+# An interactive menu for the user
+def interactive_menu
+  students = []
+  loop do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" # 9 because we'll be adding more items
+    selection = gets.chomp
+    case selection
+    when "1"
+      students = input_students
+    when "2"
+      p students
+      print_header
+      print_name(students)
+      print_cohort(students)
+      print_footer(students)
+    when "9"
+      exit
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
 end
 
 # Printing the header
@@ -95,9 +121,4 @@ def print_footer(names)
   puts "Overall, we have #{names.count} great #{student_numbers(names.count)}"
 end
 
-# Calling the methods
-students = input_students
-print_header
-print_name(students)
-print_cohort(students)
-print_footer(students)
+interactive_menu
