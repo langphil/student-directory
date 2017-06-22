@@ -6,7 +6,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -41,13 +41,13 @@ end
 def questions()
   puts "Please enter a students name"
   puts "Press enter twice to finish"
-  @name = gets.chomp
+  @name = STDIN.gets.chomp
   case @name
   when ""
     puts "All done"
   else
     puts "What cohort are they in?"
-    @cohort = gets.chomp
+    @cohort = STDIN.gets.chomp
     '''
     puts "Where were they born?"
     @born = gets.chomp
@@ -154,8 +154,8 @@ def save_students
 end
 
 # Loading student data from a CSVs
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
@@ -163,4 +163,18 @@ def load_students
   file.close
 end
 
+# Attempt to ope students file
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry #{filename} does not exist"
+    exit
+  end
+end
+
+try_load_students
 interactive_menu
