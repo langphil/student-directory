@@ -2,7 +2,6 @@
 @students = []
 
 # Interactive menu for capturing and displaying user data
-#
 # An interactive menu for the user
 def interactive_menu
   loop do
@@ -74,7 +73,6 @@ def show_students
 end
 
 # Printing captured user data to the console
-#
 # Printing the header
 def print_header
   puts "Students"
@@ -141,8 +139,6 @@ def print_footer
 end
 
 # Saving data to a CSV
-#
-#
 def save_students
   file = File.open("students.csv", "w")
   @students.each do |student|
