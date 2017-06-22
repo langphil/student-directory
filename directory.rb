@@ -1,20 +1,4 @@
-# Array of student hashes
-'''
-students = [
-  {name: "Dr. Hannibal Lecter", cohort: :november},
-  {name: "Darth Vader", cohort: :november},
-  {name: "Nurse Ratched", cohort: :november},
-  {name: "Michael Corleone", cohort: :november},
-  {name: "Alex DeLarge", cohort: :november},
-  {name: "The Wicked Witch of the West", cohort: :november},
-  {name: "Terminator", cohort: :november},
-  {name: "Freddy Krueger", cohort: :november},
-  {name: "The Joker", cohort: :november},
-  {name: "Joffrey Baratheon", cohort: :november},
-  {name: "Norman Bates", cohort: :november}
-]
-'''
-# Print the student questions
+# List of questions for input
 def questions()
   puts "Please enter a students name"
   puts "Press enter twice to finish"
@@ -30,42 +14,43 @@ def questions()
   end
 end
 
-# Push the student details to a 'Hash'
-# Return the hash of students and their details
+# Pushing question answers into a hash / array
 def input_students
   questions
   students = []
   while !@name.empty? do
     students << {name: @name, cohort: :November, born: @born, hobby: @hobby}
-    puts "We now have #{students.count} students"
+    puts "We now have #{students.count} #{student_numbers(students.count)}"
     questions
   end
   students
 end
 
-# Print the header
+# Formatting the word 'student'
+def student_numbers(num)
+  num == 1 ? "student" : "students"
+end
+
+# Printing the header
 def print_header
   puts "Students"
   puts "-------------"
 end
 
-# Print student namess
+# Printing the names to console
 def print_name(names)
   length = names.length
   count = 0
 
   while count != length
-    name = names[count][:name]
-    cohort = names[count][:cohort]
-    birth = names[count][:born]
-    hobby = names[count][:hobby]
-    if name[0] == "P" && name.length < 12
-      s_number = "Student number #{count + 1}:"
-      s_name = "#{name}"
-      s_cohort = "#{cohort}"
-      s_birth = "#{birth}"
-      s_hobby = "#{hobby}"
-      puts s_number.ljust(0)
+    name = names[count]
+    if name[:name][0] == "P" && name[:name].length < 12
+      s_number = "#{count + 1}:"
+      s_name = "#{name[:name]}"
+      s_cohort = "#{name[:cohort]}"
+      s_birth = "#{name[:born]}"
+      s_hobby = "#{name[:hobby]}"
+      puts "Student number: #{s_number.ljust(0)}"
       puts "Name: #{s_name.rjust(20)}"
       puts "Origin: #{s_birth.rjust(20)}"
       puts "Cohort: #{s_cohort.rjust(20)}"
@@ -76,25 +61,14 @@ def print_name(names)
       break
     end
   end
-
-'''
-  names.each_with_index do |name, index|
-    if name[:name][0] == "P" && name[:name].length < 12
-      puts "Student number:#{index + 1} #{name[:name]} (#{name[:cohort]} cohort)"
-    else
-      break
-    end
-  end
-end
-'''
 end
 
-# Print the footer
+# Printing the footer
 def print_footer(names)
-  # print "Overall, we have #{names.count} great student"
+  puts "Overall, we have #{names.count} great #{student_numbers(names.count)}"
 end
 
-# Call the methods
+# Calling the methods
 students = input_students
 print_header
 print_name(students)
