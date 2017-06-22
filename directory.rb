@@ -48,12 +48,6 @@ def questions()
   else
     puts "What cohort are they in?"
     @cohort = STDIN.gets.chomp
-    '''
-    puts "Where were they born?"
-    @born = gets.chomp
-    puts "What is their favourite hobby?"
-    @hobby = gets.chomp
-    '''
   end
 end
 
@@ -61,11 +55,15 @@ end
 def input_students
   questions
   while !@name.empty? do
-    @students << {name: @name, cohort: @cohort, born: @born, hobby: @hobby}
+    push_students(@name, @cohort)
     puts "We now have #{@students.count} #{student_numbers(@students.count)}"
     questions
   end
   @students
+end
+
+def push_students(name, cohort)
+  @students << {name: name, cohort: cohort}
 end
 
 #Calling methods for showing student details
@@ -87,11 +85,10 @@ def print_student_list
   length = @students.length
   count = 0
   # While loop to loop through each student
-  puts "NEW STUDENTS BEGINNING WITH 'P'"
   while count != length
     name = @students[count]
     # Only print names that begin with 'P' less than 12 characters long
-    if name[:name][0] == "P" && name[:name].length < 12
+    if name[:name][0] != "" && name[:name].length < 22
       # Call the print_student method
       print_student(count, name)
       count += 1
@@ -107,13 +104,9 @@ def print_student(count, name)
   s_number = "#{count + 1}"
   s_name = "#{name[:name]}"
   s_cohort = "#{name[:cohort]}"
-  s_birth = "#{name[:born]}"
-  s_hobby = "#{name[:hobby]}"
   puts "Student number: #{s_number.ljust(0)}"
   puts "Name: #{s_name.rjust(20)}"
-  puts "Origin: #{s_birth.rjust(20)}"
   puts "Cohort: #{s_cohort.rjust(20)}"
-  puts "Hobby: #{s_hobby.rjust(20)}"
   puts
 end
 
@@ -124,8 +117,6 @@ def print_cohort
     if i[:cohort] == "November"
       puts "Name: #{i[:name]}"
       puts "Origin: #{i[:cohort]}"
-      puts "Cohort: #{i[:born]}"
-      puts "Hobby: #{i[:hobby]}"
       puts
     end
   end
@@ -158,7 +149,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    push_students(name, cohort)
   end
   file.close
 end
@@ -169,10 +160,10 @@ def try_load_students
   return if filename.nil?
   if File.exists?(filename)
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} student files from #{filename}"
   else
-    puts "Sorry #{filename} does not exist"
-    exit
+    load_students(students.csv)
+    puts "Loading #{filename} as default"
   end
 end
 
