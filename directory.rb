@@ -1,4 +1,5 @@
 # Global array for student details
+require 'csv'
 @students = []
 
 # Interactive menu for capturing and displaying user data
@@ -6,7 +7,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    menu_process(STDIN.gets.chomp)
   end
 end
 
@@ -20,17 +21,22 @@ def print_menu
 end
 
 # Get user input
-def process(selection)
+def menu_process(selection)
   case selection
   when "1"
+    puts "Option 1 selected"
     input_students
   when "2"
+    puts "Option 2 selected"
     show_students
   when "3"
+    puts "Option 3 selected"
     save_students
   when "4"
+    puts "Option 4 selected"
     load_students
   when "9"
+    puts "Option 9 selected"
     exit
   else
     puts "I don't know what you meant, try again"
@@ -38,7 +44,7 @@ def process(selection)
 end
 
 # List of questions for input
-def questions()
+def user_questions()
   puts "Please enter a students name"
   puts "Press enter twice to finish"
   @name = STDIN.gets.chomp
@@ -53,11 +59,11 @@ end
 
 # Pushing question answers into a hash / array
 def input_students
-  questions
+  user_questions
   while !@name.empty? do
     push_students(@name, @cohort)
     puts "We now have #{@students.count} #{student_numbers(@students.count)}"
-    questions
+    user_questions
   end
   @students
 end
@@ -87,15 +93,9 @@ def print_student_list
   # While loop to loop through each student
   while count != length
     name = @students[count]
-    # Only print names that begin with 'P' less than 12 characters long
-    if name[:name][0] != "" && name[:name].length < 22
-      # Call the print_student method
-      print_student(count, name)
-      count += 1
-    else
-      count = 0
-      break
-    end
+    # Call the print_student method
+    print_student(count, name)
+    count += 1
   end
 end
 
@@ -108,18 +108,6 @@ def print_student(count, name)
   puts "Name: #{s_name.rjust(20)}"
   puts "Cohort: #{s_cohort.rjust(20)}"
   puts
-end
-
-# Printing only November Cohort
-def print_cohort
-  puts "NOVEMBER COHORT"
-  @students.map do |i|
-    if i[:cohort] == "November"
-      puts "Name: #{i[:name]}"
-      puts "Origin: #{i[:cohort]}"
-      puts
-    end
-  end
 end
 
 # Formatting the word 'student'
@@ -135,7 +123,9 @@ end
 # Read / Write of CSV file of student data
 # Saving data to a CSV
 def save_students
-  file = File.open("students.csv", "w")
+  puts "What file would you like to save to?"
+  save_file = STDIN.gets.chomp
+  file = File.open(save_file, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -146,12 +136,12 @@ end
 
 # Loading student data from a CSVs
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+  puts "What file would you like to load?"
+  load_file = STDIN.gets.chomp
+  CSV.foreach(load_file) do |row|
+    name, cohort = row
     push_students(name, cohort)
   end
-  file.close
 end
 
 # Attempt to ope students file
