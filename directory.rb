@@ -1,4 +1,5 @@
 # Global array for student details
+require 'csv'
 @students = []
 
 # Interactive menu for capturing and displaying user data
@@ -6,7 +7,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    menu_process(STDIN.gets.chomp)
   end
 end
 
@@ -20,7 +21,7 @@ def print_menu
 end
 
 # Get user input
-def process(selection)
+def menu_process(selection)
   case selection
   when "1"
     puts "Option 1 selected"
@@ -137,12 +138,10 @@ end
 def load_students(filename = "students.csv")
   puts "What file would you like to load?"
   load_file = STDIN.gets.chomp
-  file = File.open(load_file, "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+  CSV.foreach(load_file) do |row|
+    name, cohort = row
     push_students(name, cohort)
   end
-  file.close
 end
 
 # Attempt to ope students file
@@ -160,18 +159,3 @@ end
 
 try_load_students
 interactive_menu
-
-### Legacy methods
-'''
-# Printing only November Cohort
-def print_cohort
-  puts "NOVEMBER COHORT"
-  @students.map do |i|
-    if i[:cohort] == "November"
-      puts "Name: #{i[:name]}"
-      puts "Origin: #{i[:cohort]}"
-      puts
-    end
-  end
-end
-'''
